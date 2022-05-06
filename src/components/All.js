@@ -51,6 +51,7 @@ export default class All extends React.Component {
               <MovieItem
                 item={item}
                 handleFavorite={this.props.handleFavorite}
+                handleModalMovie={this.props.handleModalMovie}
               />
             ))}
           </BoxMovieItem>

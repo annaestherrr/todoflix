@@ -9,6 +9,7 @@ import All from "./components/All";
 import Modal from "./components/Modal";
 import Header from "./components/Header";
 import Favorites from "./components/Favorites";
+import ModalMovie from "./components/ModalMovies";
 
 //Styles
 const GlobalStyle = createGlobalStyle` 
@@ -22,12 +23,14 @@ const GlobalStyle = createGlobalStyle`
 
 export default class App extends React.Component {
   state = {
+    selectedMovie: null,
     isModal: false,
     filterValue: "",
     movies: [
       {
         id: 0,
-        poster: 'https://istoe.com.br/wp-content/uploads/sites/14/2020/01/minha-mae-e-uma-peca-3.jpg',
+        poster:
+          "https://istoe.com.br/wp-content/uploads/sites/14/2020/01/minha-mae-e-uma-peca-3.jpg",
         title: "Minha Mãe é Uma Peça",
         overview:
           "Dona Hermínia é uma mulher de meia idade, aposentada e não tem muitas ocupações. Ela é uma mãe dedicada e está sempre preocupada com os filhos, só que eles cresceram, e já não precisam tanto dela. Sem um trabalho, um companheiro ou filhos pequenos para se ocupar, Dona Hermínia passa o dia todo desabafando sobre seus problemas com a tia idosa, a vizinha fofoqueira e a amiga confidente..",
@@ -121,6 +124,10 @@ export default class App extends React.Component {
     this.setState({ isModal: !this.state.isModal });
   };
 
+  handleModalMovie = (item) => {
+    this.setState({ selectedMovie: item });
+  };
+
   handleFavorite = (id) => {
     const list = this.state.movies.map((item) => {
       if (item.id === id) {
@@ -138,19 +145,19 @@ export default class App extends React.Component {
 
   handleChangeFilter = (ev) => {
     const { value } = ev.target;
-    console.log(value);
     this.setState({
       filterValue: value,
     });
   };
 
   render() {
-    const { filterValue } = this.state;
-    const list = this.state.movies.filter((item) =>
+    const { filterValue, movies, selectedMovie, isModal } = this.state;
+
+    const list = movies.filter((item) =>
       item.title.toLowerCase().includes(filterValue.toLowerCase())
     );
 
-    const listFavorite = list.filter((item) => item.favorite)
+    const listFavorite = list.filter((item) => item.favorite);
 
     return (
       <Router>
@@ -159,21 +166,45 @@ export default class App extends React.Component {
           handleFilter={this.handleChangeFilter}
           filterValue={this.state.filterValue}
         />
-        {this.state.isModal && <Modal handleModal={this.handleModal} />}
+        {isModal && <Modal handleModal={this.handleModal} />}
+        {selectedMovie && (
+          <ModalMovie
+            handleModalMovie={this.handleModalMovie}
+            item={movies.find((item) => item.id === selectedMovie)}
+            handleFavorite={this.handleFavorite}
+          />
+        )}
         <Routes>
           <Route
             path="/"
             element={
-              <Home handleFavorite={this.handleFavorite} list={list} />
+              <Home
+                handleFavorite={this.handleFavorite}
+                list={list}
+                coverMovie={movies[0]}
+                handleModalMovie={this.handleModalMovie}
+              />
             }
           />
           <Route
             path="/all"
-            element={<All handleFavorite={this.handleFavorite} list={list} />}
+            element={
+              <All
+                handleFavorite={this.handleFavorite}
+                list={list}
+                handleModalMovie={this.handleModalMovie}
+              />
+            }
           />
           <Route
             path="/favorites"
-            element={<Favorites handleFavorite={this.handleFavorite} list={listFavorite} />}
+            element={
+              <Favorites
+                handleFavorite={this.handleFavorite}
+                list={listFavorite}
+                handleModalMovie={this.handleModalMovie}
+              />
+            }
           />
         </Routes>
       </Router>

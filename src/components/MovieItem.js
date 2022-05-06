@@ -7,11 +7,16 @@ import Heart from "../assets/heart.svg";
 
 //Styles
 
-const SlideShow = styled.div`
+const SlideShow = styled.button`
   width: 259px;
   display: flex;
   flex-direction: column;
   margin: 0.5rem;
+  padding: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
 
   p {
     font-size: 0.8rem;
@@ -29,12 +34,13 @@ const IconHeart = styled.img`
 `;
 
 const Img = styled.img`
-  width: 16rem;
+  width: 100%;
   height: 9rem;
   border-radius: 5px;
 `;
 
 const InfosMovie = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -70,6 +76,7 @@ const TitleMovies = styled.h3`
 const OverviewMovies = styled.p`
   margin-top: 0rem;
   color: white;
+  text-align: left;
 
   @media (max-width: 480px) {
     margin-top: 0.5rem;
@@ -83,12 +90,17 @@ export default class MovieItem extends React.Component {
     return "#6CBE61";
   };
 
+  handleFavorite = (ev) => {
+    ev.stopPropagation();
+    this.props.handleFavorite(this.props.item.id);
+  };
+
   render() {
     const { item } = this.props;
     return (
-      <SlideShow>
+      <SlideShow onClick={() => this.props.handleModalMovie(item.id)}>
         <IconHeart
-          onClick={() => this.props.handleFavorite(item.id)}
+          onClick={this.handleFavorite}
           style={
             !item.favorite
               ? { filter: "brightness(0.5)" }

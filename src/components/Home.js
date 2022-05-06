@@ -19,31 +19,31 @@ const Body = styled.div`
   background-color: black;
   font-family: Arial, Bold;
 
-  @media(max-width: 480px) {
-  display: flex;
-  flex-direction: column;
-}
+  @media (max-width: 480px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const BoxInitial = styled.div`
   display: flex;
   padding: 4rem;
 
-  @media(max-width: 480px) {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 1rem;
-}
+  @media (max-width: 480px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+  }
 `;
 
 const BoxDescription = styled.div`
   width: 30%;
   padding: 0.5rem;
 
-  @media(max-width: 480px) {
-  width: 90%;
-}
+  @media (max-width: 480px) {
+    width: 90%;
+  }
 `;
 
 const ImageBannerInitial = styled.img`
@@ -51,17 +51,16 @@ const ImageBannerInitial = styled.img`
   height: 18rem;
   border-radius: 5px;
 
-  @media(max-width: 480px) {
-  width: 90%;
-  height: 15rem;
-}
+  @media (max-width: 480px) {
+    width: 90%;
+    height: 15rem;
+  }
 `;
 
 const Title = styled.h1`
-
-  @media(max-width: 480px) {
-  font-size: 1rem;
-}
+  @media (max-width: 480px) {
+    font-size: 1rem;
+  }
 `;
 
 const Overview = styled.p`
@@ -83,9 +82,9 @@ const SubTitle = styled.h2`
   font-size: 0.9rem;
   padding-top: 1rem;
 
-  @media(max-width: 480px) {
-  font-size: 0.8rem;
-}
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const Nota = styled.div`
@@ -105,43 +104,39 @@ const TitleCarousel = styled.h3`
 `;
 
 export default class Home extends React.Component {
- 
-
   handleMainFavorite = () => {
     this.setState({
       mainMovie: {
         ...this.state.mainMovie,
-        favorite: !this.state.mainMovie.favorite
-      }
+        favorite: !this.state.mainMovie.favorite,
+      },
     });
   };
 
   render() {
-
-    const { list } = this.props;
+    const { list, coverMovie } = this.props;
 
     return (
       <Body>
         <BoxInitial>
-          <ImageBannerInitial
-            src={list[0].poster}
-            alt="Banner do filme"
-          />
+          <ImageBannerInitial src={coverMovie.poster} alt="Banner do filme" />
           <BoxDescription>
-            <IconHeart onClick={() => this.props.handleFavorite(list[0].id)} 
+            <IconHeart
+              onClick={() => this.props.handleFavorite(coverMovie.id)}
               style={
-                !list[0].favorite
+                !coverMovie.favorite
                   ? { filter: "brightness(0.5)" }
-                  : { filter: "drop-shadow(1px 1px 10px rgba(255, 255, 255, 0.5))" }
+                  : {
+                      filter:
+                        "drop-shadow(1px 1px 10px rgba(255, 255, 255, 0.5))",
+                    }
               }
               src={Heart}
               alt="heart icon"
             />
             <SubTitle>Visto Rescentemente</SubTitle>
-            <Title>{list[0].title}</Title>
-            <Overview>
-              {list[0].overview}
-            </Overview>
+            <Title>{coverMovie.title}</Title>
+            <Overview>{coverMovie.overview}</Overview>
             <Nota>
               <p>5/5</p>
               <img src={Like} alt="icon like" />
@@ -153,15 +148,16 @@ export default class Home extends React.Component {
           <TitleCarousel>Destaques</TitleCarousel>
           {list.length === 0 ? (
             <p style={{ color: "white", padding: "2rem" }}>
-              Nenhum filme encontrado
+              Ops... Nenhum filme encontrado!
             </p>
           ) : (
             <Carousel
               renderBottomCenterControls={false}
               slidesToShow={list.length >= 5 ? 5 : list.length}
               wrapAround={true}
-              autoplay={false}
+              autoplay={true}
               keyCodeConfig={true}
+              autoplayInterval={1500}
               defaultControlsConfig={{
                 nextButtonText: " >",
                 prevButtonText: " <",
@@ -169,6 +165,8 @@ export default class Home extends React.Component {
             >
               {list.map((item) => (
                 <MovieItem
+                  key={item.id}
+                  handleModalMovie={this.props.handleModalMovie}
                   item={item}
                   handleFavorite={this.props.handleFavorite}
                 />

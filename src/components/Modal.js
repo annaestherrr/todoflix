@@ -4,7 +4,7 @@ import styled from "styled-components";
 import ReactStars from "react-rating-stars-component";
 
 //Image
-import ImgModal from "../assets/Modal.jpg";
+import ImgModal from "../assets/Modal.png";
 
 const Container = styled.div`
   height: 100%;
@@ -121,6 +121,7 @@ const Nota = styled.p`
 
 const ContentImage = styled.div`
   display: flex;
+  align-items: flex-start;
   flex-direction: column;
   width: 40rem;
   height: 15rem;
@@ -130,7 +131,7 @@ const ContentImage = styled.div`
 `;
 
 const ImgCapa = styled.img`
-  width: 15rem;
+  width: 12rem;
   height: 8rem;
   border-radius: 0.2rem;
 `;

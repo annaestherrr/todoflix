@@ -17,11 +17,9 @@ const Container = styled.div`
   z-index: 1;
   background-color: black;
   color: white;
-
 `;
 
 const Nav = styled.nav`
-
   display: flex;
   justify-content: space-between;
 
@@ -168,7 +166,6 @@ const Input = styled.input`
   color: white;
 
   @media (max-width: 480px) {
-   
     font-size: 0.8rem;
   }
 `;
